@@ -5,16 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_246_Box"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <StackPanel>
-
-        <TextBlock Text="Жанр" Margin="5"/>
-        <ComboBox  x:Name="comboGenre" Margin="5" SelectionChanged="comboGenre_SelectionChanged"/>
+        Title="Интернет Магазин" Height="450" Width="800">
+    <StackPanel >
         
-        <ListBox x:Name="listBook" Height="100" Margin="5" SelectionChanged="listBook_SelectionChanged"/>
+        <TextBlock Text="Инетренет магазин" Margin="5"/>
+        <TextBox Text="Выберите категорию" Margin="10"/>
+        <ComboBox  x:Name="comboCategory" Margin="5" SelectionChanged="comboCategory_SelectionChanged"/>
 
-        <TextBox x:Name="txtDesc" Margin="5"/>
-        <TextBox x:Name="txtPrice" Margin="5"/>
+        <TextBlock Text="Список товаров" Margin="10" />
+        <ListBox x:Name="listProduct" Height="80" Margin="5" SelectionChanged="listProduct_SelectionChanged"/>
+
+        <TextBox Text="Название товара:" Margin="5" />
+        <TextBox x:Name="txtName" Margin="5"/>
+
+        <TextBox Text="Количество:" Margin="5"/>
+        <TextBox x:Name="txtQuantity" Margin="5"/>
+        
+
+        <Button x:Name="btnBuy" Content="Добавить в корзину" Margin="5" Click="btnBuy_Click"/>
+        <TextBlock Text="Корзина" Margin="5"/>
+        <ListBox x:Name="listCart"/>
+        
+        <Button x:Name="btnCheck" Content="Офрмить заказ" Click="btnCheck_Click"/>
+        <TextBlock x:Name="txtInfo" Margin="5"/>
+        <TextBlock x:Name="txtinfo" Margin="5"/>
 
     </StackPanel>
 </Window>

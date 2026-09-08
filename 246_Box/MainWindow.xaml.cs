@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel; // Пространство имен для ObservableCollection
+﻿using System.Collections.ObjectModel; 
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,99 +12,117 @@ using System.Windows.Shapes;
 
 namespace _246_Box
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// Это главное окно приложения, которое содержит элементы управления для отображения и фильтрации книг
-    /// </summary>
     public partial class MainWindow : Window
     {
-        // Коллекция всех книг, доступных в приложении
-        // ObservableCollection автоматически уведомляет UI об изменениях (добавление/удаление)
-        ObservableCollection<Book> books = new ObservableCollection<Book>();
-
-        // Коллекция для отображения отфильтрованных книг
-        // Используется как источник данных для ListBox после применения фильтра по жанру
-        ObservableCollection<Book> display = new ObservableCollection<Book>();
-
-        // Коллекция доступных жанров для выпадающего списка (ComboBox)
-        ObservableCollection<string> genres = new ObservableCollection<string>();
+        ObservableCollection<Product> products = new ObservableCollection<Product>();
+        ObservableCollection<Product> filteredProduct = new ObservableCollection<Product>();
+        ObservableCollection<Product> cart = new ObservableCollection<Product>();
+        ObservableCollection<string> categories = new ObservableCollection<string>();
 
         public MainWindow()
         {
-            // Инициализация компонентов окна (обязательный вызов для XAML)
+
             InitializeComponent();
 
             // Добавление книг в основную коллекцию 
             // Каждая книга содержит название, описание, жанр и цену
-            books.Add(new Book { Title = "Книга 1", Description = "Описание 1", Genre = "Жанр 1", Price = 552 });
-            books.Add(new Book { Title = "Книга 2", Description = "Описание 2", Genre = "Жанр 2", Price = 43 });
-            books.Add(new Book { Title = "Книга 3", Description = "Описание 3", Genre = "Жанр 1", Price = 2 });
-            books.Add(new Book { Title = "Книга 4", Description = "Описание 4", Genre = "Жанр 2", Price = 64 });
-            books.Add(new Book { Title = "Книга 5", Description = "Описание 5", Genre = "Жанр 1", Price = 76 });
-            books.Add(new Book { Title = "Книга 6", Description = "Описание 6", Genre = "Жанр 1", Price = 98 });
+            products.Add(new Product { Name = "Молоко", Quantity = 20, Category = "Молоко",});
+            products.Add(new Product { Name = "Хлеб", Quantity = 10, Category = "Хлеб",});
+            products.Add(new Product { Name = "Батон", Quantity = 4, Category = "Хлеб",});
+            products.Add(new Product { Name = "Картошка", Quantity = 6, Category = "Овощи",});
+            products.Add(new Product { Name = "Сыр", Quantity = 7, Category = "Молоко",});
+            products.Add(new Product { Name = "Яблоки", Quantity = 8, Category = "Фрукты",});
 
-            // Установка источника данных для ListBox (список книг)
-            // Изначально отображаются все книги
-            listBook.ItemsSource = books;
+            listProduct.ItemsSource = products;
 
             // Добавление жанров в выпадающий список
             // Жанр 3 добавлен, но не используется ни в одной книге (для демонстрации)
-            genres.Add("Жанр 1");
-            genres.Add("Жанр 2");
-            genres.Add("Жанр 3");
+            categories.Add("Все");
+            categories.Add("Хлеб");
+            categories.Add("Молоко");
+            categories.Add("Овощи");
+            categories.Add("Фрукты");
 
             // Привязка коллекции жанров к ComboBox
-            comboGenre.ItemsSource = genres;
+            comboCategory.ItemsSource = categories;
+            comboCategory.SelectedIndex = 0;
+
+            filteredProduct= new ObservableCollection<Product>(products);
+            listProduct.ItemsSource = filteredProduct;
+            listCart.ItemsSource = cart;
+
+            
+
         }
-
-        /// <summary>
-        /// Обработчик события выбора элемента в списке книг (ListBox)
-        /// Срабатывает при клике на книгу в списке
-        /// </summary>
-        /// <param name="sender">Объект, вызвавший событие (ListBox)</param>
-        /// <param name="e">Аргументы события, содержащие информацию о выбранном элементе</param>
-        private void listBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void listProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Проверка, что выбранный элемент является объектом типа Book
-            // Если да, то извлекаем его в переменную b
-            if (listBook.SelectedItem is Book b)
-            {
-                // Отображение цены выбранной книги в текстовом поле txtPrice
-                // ToString() преобразует числовое значение в строку
-                txtPrice.Text = b.Price.ToString();
 
-                // Отображение описания выбранной книги в текстовом поле txtDesc
-                txtDesc.Text = b.Description.ToString();
+            if (listProduct.SelectedItem is Product b)
+            {
+
+                txtName.Text = b.Name;
+                txtQuantity.Text = b.Quantity.ToString();
+                btnBuy.IsEnabled = true;
             }
         }
 
-        /// <summary>
-        /// Обработчик события изменения выбранного жанра в ComboBox
-        /// Срабатывает при выборе пользователем жанра из выпадающего списка
-        /// </summary>
-        /// <param name="sender">Объект, вызвавший событие (ComboBox)</param>
-        /// <param name="e">Аргументы события</param>
-        private void comboGenre_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void comboCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Проверка, что в ComboBox выбран какой-либо элемент (не null)
-            if (comboGenre.SelectedItem != null)
+            if (comboCategory.SelectedItem != null)
             {
-                // Получение выбранного жанра в виде строки
-                // ToString() возвращает название жанра
-                string g = comboGenre.SelectedItem.ToString();
 
-                // Создание новой отфильтрованной коллекции книг
-                // Используется LINQ-запрос Where для фильтрации книг по жанру
-                // b.Genre == g - условие: жанр книги должен совпадать с выбранным жанром
-                // Результат запроса преобразуется в ObservableCollection для отслеживания изменений
-                display = new ObservableCollection<Book>(
-                    books.Where(b => b.Genre == g)
+                string g = comboCategory.SelectedItem.ToString();
+
+               
+                filteredProduct = new ObservableCollection<Product>(
+                    products.Where(b => b.Category == g)
                     );
 
-                // Обновление источника данных ListBox
-                // Теперь в списке отображаются только книги выбранного жанра
-                listBook.ItemsSource = display;
+                listProduct.ItemsSource = filteredProduct;
             }
         }
+        private void btnBuy_Click(object sender, RoutedEventArgs e)
+        {
+            if(listProduct.SelectedItem is Product b)
+            {
+                if(b.Quantity > 0)
+                {
+                    b.Quantity --;
+
+                    cart.Add(new Product { Name = b.Name, Quantity = 1 });
+                    
+
+                    listProduct.SelectedItem = null;
+                    txtName.Text = b.Name;
+                    txtQuantity.Text = b.Quantity.ToString();
+                    btnBuy.IsEnabled = false;
+                }
+            }
+        }
+
+        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if(cart.Count == 0)
+            {
+                MessageBox.Show("Корзина пуста!");
+                return;
+                    
+            }
+            string result = "Ваш заказ: \n";
+
+            foreach (var item in cart)
+            {
+                result += item.Name +"\n";
+
+            }
+            result += "\nВсего: " + cart.Count + " товаров";
+
+            MessageBox.Show(result,"Заказ оформлен");
+
+            cart.Clear();
+
+        }
+        
     }
 }
