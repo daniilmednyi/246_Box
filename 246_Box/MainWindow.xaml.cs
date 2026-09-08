@@ -68,7 +68,7 @@ namespace _246_Box
 
         private void comboCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Проверка, что в ComboBox выбран какой-либо элемент (не null)
+            //ваыв Проверка, что в ComboBox выбран какой-либо элемент (не null)
             if (comboCategory.SelectedItem != null)
             {
 

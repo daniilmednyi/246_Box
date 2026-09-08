@@ -10,7 +10,7 @@
         
         <TextBlock Text="Инетренет магазин" Margin="5"/>
         <TextBox Text="Выберите категорию" Margin="10"/>
-        <ComboBox  x:Name="comboCategory" Margin="5" SelectionChanged="comboCategory_SelectionChanged"/>
+        <ComboBox  x:Name="comboCategory" Margin="7" SelectionChanged="comboCategory_SelectionChanged"/>
 
         <TextBlock Text="Список товаров" Margin="10" />
         <ListBox x:Name="listProduct" Height="80" Margin="5" SelectionChanged="listProduct_SelectionChanged"/>
